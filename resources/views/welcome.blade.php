@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nofiu Moruf Pelumi | Data Scientist & Software Programmer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: #030712; color: #fff; overflow-x: hidden; }
+
+        .gradient-text { background: linear-gradient(135deg, #6366F1, #22D3EE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn-primary { background: linear-gradient(135deg, #6366F1, #22D3EE); color: #fff; padding: 0.85rem 2rem; border-radius: 10px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s; border: none; cursor: pointer; font-size: 0.95rem; }
+        .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(99,102,241,0.4); }
+        .btn-outline { border: 1px solid rgba(99,102,241,0.5); color: #fff; padding: 0.85rem 2rem; border-radius: 10px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s; }
+        .btn-outline:hover { border-color: #6366F1; background: rgba(99,102,241,0.1); transform: translateY(-2px); }
+
+        /* LOADER */
+        #loader { position: fixed; inset: 0; background: #030712; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.6s; }
+        #loader .loader-name { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.2rem, 4vw, 2rem); font-weight: 800; background: linear-gradient(135deg, #6366F1, #22D3EE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; text-align: center; padding: 0 1rem; }
+        #loader .loader-bar { width: 200px; height: 2px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+        #loader .loader-progress { height: 100%; background: linear-gradient(135deg, #6366F1, #22D3EE); animation: loadProgress 1.8s ease forwards; }
+        @keyframes loadProgress { 0%{width:0} 100%{width:100%} }
+
+        /* PARTICLES */
+        #particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+        .particle { position: absolute; border-radius: 50%; animation: floatUp linear infinite; }
+        @keyframes floatUp { 0%{transform:translateY(100vh);opacity:0;} 15%{opacity:0.15;} 85%{opacity:0.08;} 100%{transform:translateY(-50px);opacity:0;} }
+
+        /* NAVBAR */
+        .navbar { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 1.2rem 2rem; transition: all 0.3s; }
+        .navbar.scrolled { background: rgba(3,7,18,0.97); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(99,102,241,0.1); }
+        .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1.3rem; text-decoration: none; color: #fff; }
+        .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: #6366F1; }
+        .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+        .hamburger span { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.3s; }
+        .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        section { position: relative; z-index: 1; }
+        .section-tag { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1.2rem; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); border-radius: 50px; color: #6366F1; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.5rem; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-header h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 1rem; }
+        .section-header p { color: rgba(255,255,255,0.45); font-size: 1rem; max-width: 500px; margin: 0 auto; }
+
+        /* HERO */
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 8rem 1.5rem 4rem; background: radial-gradient(ellipse at top, #0f0a2e 0%, #030712 65%); }
+        .hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1rem; }
+        .hero-roles { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+        .hero-role { padding: 0.35rem 1rem; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); border-radius: 50px; font-size: 0.8rem; color: rgba(255,255,255,0.7); }
+        .hero p { font-size: clamp(0.95rem, 2vw, 1.15rem); color: rgba(255,255,255,0.55); max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.8; }
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 4rem; }
+        .hero-stats { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+        .hero-stat h3 { font-family: 'Space Grotesk', sans-serif; font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, #6366F1, #22D3EE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-stat p { color: rgba(255,255,255,0.4); font-size: 0.82rem; margin-top: 0.25rem; }
+
+        /* ABOUT */
+        .about { padding: 7rem 1.5rem; }
+        .about-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; align-items: center; }
+        .about-img-wrap { width: 100%; aspect-ratio: 3/4; border-radius: 24px; overflow: hidden; border: 2px solid rgba(99,102,241,0.4); box-shadow: 0 0 40px rgba(99,102,241,0.2), 0 0 80px rgba(34,211,238,0.1); }
+        .about-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: top center; filter: contrast(1.05) brightness(1.02); }
+        .about-text h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; margin-bottom: 1.5rem; line-height: 1.2; }
+        .about-text p { color: rgba(255,255,255,0.55); line-height: 1.9; margin-bottom: 1.2rem; font-size: 0.97rem; }
+        .about-info { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+        .info-item span { color: rgba(255,255,255,0.35); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 0.25rem; }
+        .info-item p { color: #fff; font-weight: 500; font-size: 0.9rem; }
+
+        /* SKILLS */
+        .skills { padding: 7rem 1.5rem; background: radial-gradient(ellipse at center, #0f0a2e 0%, #030712 70%); }
+        .skills-inner { max-width: 1100px; margin: 0 auto; }
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1.2rem; }
+        .skill-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(99,102,241,0.15); border-radius: 16px; padding: 1.5rem 1rem; text-align: center; transition: all 0.3s; }
+        .skill-item:hover { border-color: #6366F1; transform: translateY(-4px); box-shadow: 0 15px 30px rgba(99,102,241,0.15); }
+        .skill-item i { font-size: 1.8rem; margin-bottom: 0.65rem; display: block; background: linear-gradient(135deg, #6366F1, #22D3EE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .skill-item p { font-size: 0.82rem; font-weight: 500; color: rgba(255,255,255,0.7); }
+
+        /* PROJECTS */
+        .projects { padding: 7rem 1.5rem; }
+        .projects-inner { max-width: 1100px; margin: 0 auto; }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
+        .project-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(99,102,241,0.15); border-radius: 20px; overflow: hidden; transition: all 0.3s; }
+        .project-card:hover { border-color: rgba(99,102,241,0.4); transform: translateY(-5px); box-shadow: 0 25px 50px rgba(99,102,241,0.12); }
+        .project-img { height: 180px; background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(34,211,238,0.2)); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; color: rgba(255,255,255,0.25); }
+        .project-body { padding: 1.5rem; }
+        .project-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+        .project-tag { padding: 0.2rem 0.65rem; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); border-radius: 50px; font-size: 0.68rem; color: #6366F1; font-weight: 600; }
+        .project-body h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; }
+        .project-body p { color: rgba(255,255,255,0.5); font-size: 0.88rem; line-height: 1.7; margin-bottom: 1.2rem; }
+        .project-links { display: flex; gap: 1rem; }
+        .project-link { display: inline-flex; align-items: center; gap: 0.4rem; color: #6366F1; text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: opacity 0.3s; }
+        .project-link:hover { opacity: 0.7; }
+
+        /* EXPERIENCE */
+        .experience { padding: 7rem 1.5rem; background: radial-gradient(ellipse at bottom, #0f0a2e 0%, #030712 70%); }
+        .experience-inner { max-width: 750px; margin: 0 auto; }
+        .timeline { position: relative; padding-left: 2rem; }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, #6366F1, #22D3EE, transparent); }
+        .timeline-item { position: relative; padding-bottom: 3rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -2.35rem; top: 0.3rem; width: 12px; height: 12px; border-radius: 50%; background: linear-gradient(135deg, #6366F1, #22D3EE); box-shadow: 0 0 15px rgba(99,102,241,0.5); }
+        .timeline-date { color: #6366F1; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem; }
+        .timeline-item h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .timeline-item h4 { color: rgba(255,255,255,0.45); font-size: 0.87rem; font-weight: 400; margin-bottom: 0.6rem; }
+        .timeline-item p { color: rgba(255,255,255,0.45); font-size: 0.88rem; line-height: 1.7; }
+
+        /* SERVICES */
+        .services { padding: 7rem 1.5rem; }
+        .services-inner { max-width: 1100px; margin: 0 auto; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.8rem; }
+        .service-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(99,102,241,0.15); border-radius: 20px; padding: 2rem; transition: all 0.3s; }
+        .service-card:hover { border-color: rgba(99,102,241,0.4); transform: translateY(-5px); }
+        .service-icon { width: 52px; height: 52px; background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(34,211,238,0.2)); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.2rem; font-size: 1.4rem; color: #6366F1; }
+        .service-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; }
+        .service-card p { color: rgba(255,255,255,0.45); font-size: 0.88rem; line-height: 1.7; }
+
+        /* TESTIMONIALS */
+        .testimonials { padding: 7rem 1.5rem; background: radial-gradient(ellipse at center, #0f0a2e 0%, #030712 70%); }
+        .testimonials-inner { max-width: 1100px; margin: 0 auto; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.8rem; }
+        .testimonial-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(99,102,241,0.15); border-radius: 20px; padding: 2rem; transition: all 0.3s; }
+        .testimonial-card:hover { border-color: rgba(99,102,241,0.4); }
+        .testimonial-stars { color: #F59E0B; margin-bottom: 1rem; }
+        .testimonial-card p { color: rgba(255,255,255,0.6); font-size: 0.92rem; line-height: 1.8; margin-bottom: 1.5rem; font-style: italic; }
+        .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+        .testimonial-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #6366F1, #22D3EE); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.95rem; flex-shrink: 0; }
+        .testimonial-author h4 { font-weight: 600; font-size: 0.88rem; }
+        .testimonial-author p { color: rgba(255,255,255,0.4); font-size: 0.78rem; margin: 0; }
+
+        /* CONTACT */
+        .contact { padding: 7rem 1.5rem; }
+        .contact-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.5fr; gap: 4rem; align-items: start; }
+        .contact-info h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; margin-bottom: 1.2rem; line-height: 1.2; }
+        .contact-info p { color: rgba(255,255,255,0.5); line-height: 1.8; margin-bottom: 2rem; font-size: 0.95rem; }
+        .contact-items { display: flex; flex-direction: column; gap: 1.2rem; }
+        .contact-item { display: flex; align-items: center; gap: 1rem; }
+        .contact-icon { width: 46px; height: 46px; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6366F1; font-size: 1rem; flex-shrink: 0; }
+        .contact-item h4 { font-size: 0.75rem; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.15rem; }
+        .contact-item p { font-size: 0.92rem; font-weight: 500; margin: 0; word-break: break-all; }
+        .contact-form { background: rgba(255,255,255,0.03); border: 1px solid rgba(99,102,241,0.15); border-radius: 20px; padding: 2.5rem; }
+        .form-group { margin-bottom: 1.3rem; }
+        .form-group label { display: block; color: rgba(255,255,255,0.6); font-size: 0.82rem; margin-bottom: 0.5rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.85rem 1.1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(99,102,241,0.2); border-radius: 10px; color: #fff; font-size: 0.92rem; outline: none; transition: border-color 0.3s; font-family: 'Inter', sans-serif; }
+        .form-group input:focus, .form-group textarea:focus { border-color: #6366F1; }
+        .form-group textarea { height: 120px; resize: none; }
+
+        /* CTA */
+        .cta { padding: 7rem 1.5rem; background: radial-gradient(ellipse at center, #0f0a2e 0%, #030712 70%); text-align: center; }
+        .cta-inner { max-width: 650px; margin: 0 auto; }
+        .cta h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 800; margin-bottom: 1.2rem; line-height: 1.2; }
+        .cta p { color: rgba(255,255,255,0.5); font-size: 1rem; margin-bottom: 2.5rem; line-height: 1.8; }
+        .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+        /* FOOTER */
+        footer { border-top: 1px solid rgba(99,102,241,0.1); padding: 2rem 1.5rem; }
+        footer .inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        footer p { color: rgba(255,255,255,0.35); font-size: 0.82rem; }
+        .social-links { display: flex; gap: 0.75rem; }
+        .social-link { width: 36px; height: 36px; border-radius: 9px; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6); text-decoration: none; transition: all 0.3s; font-size: 0.85rem; }
+        .social-link:hover { background: rgba(99,102,241,0.2); color: #6366F1; border-color: #6366F1; }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+            .about-img-wrap { max-width: 350px; margin: 0 auto; aspect-ratio: 3/4; }
+            .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+        }
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-links { position: fixed; top: 0; right: -100%; width: 75%; max-width: 280px; height: 100vh; background: #030712; border-left: 1px solid rgba(99,102,241,0.1); flex-direction: column; padding: 5rem 1.5rem 2rem; gap: 0.3rem; transition: right 0.3s; z-index: 999; list-style: none; }
+            .nav-links.open { right: 0; }
+            .nav-links a { padding: 0.75rem 1rem; border-radius: 10px; font-size: 0.95rem; display: block; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .skills-grid { grid-template-columns: repeat(3, 1fr); }
+            .hero-stats { gap: 1.5rem; }
+            .about-info { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .skills-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero-stat h3 { font-size: 1.8rem; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Loader -->
+<div id="loader">
+    <div class="loader-name">Nofiu Moruf Pelumi</div>
+    <div class="loader-bar"><div class="loader-progress"></div></div>
+</div>
+
+<!-- Particles -->
+<div id="particles"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+    <div class="nav-inner">
+        <a href="#home" class="nav-logo">NMP<span class="gradient-text">.</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#contact" style="background:linear-gradient(135deg,#6366F1,#22D3EE);color:#fff;padding:0.5rem 1.2rem;border-radius:8px;font-size:0.85rem;">Hire Me</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+    <div style="max-width:900px; width:100%;">
+        <div class="section-tag"><i class="fas fa-circle" style="font-size:0.5rem; color:#10B981;"></i> Available for Work</div>
+        <h1>Hi, I'm <span class="gradient-text">Nofiu<br>Moruf Pelumi</span></h1>
+        <div class="hero-roles">
+            <span class="hero-role"><i class="fas fa-chart-bar"></i> Data Scientist</span>
+            <span class="hero-role"><i class="fas fa-search"></i> Data Analyst</span>
+            <span class="hero-role"><i class="fas fa-code"></i> Software Programmer</span>
+        </div>
+        <p>Crafting intelligent digital experiences with data and code. First Class Mathematics graduate from University of Nigeria, Nsukka turning complex data into powerful insights.</p>
+        <div class="hero-buttons">
+            <a href="#projects" class="btn-primary"><i class="fas fa-eye"></i> View Projects</a>
+            <a href="#contact" class="btn-outline"><i class="fas fa-paper-plane"></i> Hire Me</a>
+        </div>
+        <div class="hero-stats">
+            <div class="hero-stat"><h3>3+</h3><p>Years Experience</p></div>
+            <div class="hero-stat"><h3>20+</h3><p>Projects Built</p></div>
+            <div class="hero-stat"><h3>1st</h3><p>Class Graduate</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+    <div class="about-inner">
+        <div>
+            <div class="about-img-wrap">
+                <img src="/nofiu.jpg" alt="Nofiu Moruf Pelumi">
+            </div>
+        </div>
+        <div class="about-text">
+            <div class="section-tag"><i class="fas fa-user"></i> About Me</div>
+            <h2>Passionate about <span class="gradient-text">Data & Code</span></h2>
+            <p>I'm Nofiu Moruf Pelumi, a First Class Mathematics graduate from the University of Nigeria, Nsukka with a deep passion for technology, data science, and software development.</p>
+            <p>I love building elegant, data-driven applications that solve real-world problems. When I'm not coding, I'm exploring the latest in machine learning and AI.</p>
+            <div class="about-info">
+                <div class="info-item"><span>Name</span><p>Nofiu Moruf Pelumi</p></div>
+                <div class="info-item"><span>Degree</span><p>B.Sc Mathematics (1st Class)</p></div>
+                <div class="info-item"><span>University</span><p>University of Nigeria, Nsukka</p></div>
+                <div class="info-item"><span>Roles</span><p>Data Scientist | Data Analyst | Software Programmer</p></div>
+            </div>
+            <div style="margin-top:2rem; display:flex; gap:1rem; flex-wrap:wrap;">
+                <a href="#contact" class="btn-primary"><i class="fas fa-download"></i> Download CV</a>
+                <a href="https://github.com/nofiupelumi" target="_blank" class="btn-outline"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills" id="skills">
+    <div class="skills-inner">
+        <div class="section-header">
+            <div class="section-tag"><i class="fas fa-star"></i> Skills</div>
+            <h2>My <span class="gradient-text">Expertise</span></h2>
+            <p>Technologies and tools I work with to bring ideas to life</p>
+        </div>
+        <div class="skills-grid">
+            <div class="skill-item"><i class="fab fa-python"></i><p>Python</p></div>
+            <div class="skill-item"><i class="fas fa-chart-bar"></i><p>Data Science</p></div>
+            <div class="skill-item"><i class="fas fa-brain"></i><p>Machine Learning</p></div>
+            <div class="skill-item"><i class="fab fa-js"></i><p>JavaScript</p></div>
+            <div class="skill-item"><i class="fab fa-html5"></i><p>HTML5</p></div>
+            <div class="skill-item"><i class="fab fa-css3-alt"></i><p>CSS3</p></div>
+            <div class="skill-item"><i class="fab fa-react"></i><p>React</p></div>
+            <div class="skill-item"><i class="fab fa-laravel"></i><p>Laravel</p></div>
+            <div class="skill-item"><i class="fab fa-php"></i><p>PHP</p></div>
+            <div class="skill-item"><i class="fas fa-database"></i><p>SQL</p></div>
+            <div class="skill-item"><i class="fab fa-git-alt"></i><p>Git</p></div>
+            <div class="skill-item"><i class="fas fa-square-root-alt"></i><p>Mathematics</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+    <div class="projects-inner">
+        <div class="section-header">
+            <div class="section-tag"><i class="fas fa-code-branch"></i> Projects</div>
+            <h2>Featured <span class="gradient-text">Work</span></h2>
+            <p>A selection of projects I've built with passion and precision</p>
+        </div>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-img"><i class="fas fa-chart-line"></i></div>
+                <div class="project-body">
+                    <div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">Machine Learning</span><span class="project-tag">Data Science</span></div>
+                    <h3>Data Analytics Dashboard</h3>
+                    <p>An interactive data analytics dashboard built with Python and machine learning algorithms for predictive analysis.</p>
+                    <div class="project-links">
+                        <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                        <a href="https://github.com/nofiupelumi" class="project-link"><i class="fab fa-github"></i> GitHub</a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-img"><i class="fas fa-globe"></i></div>
+                <div class="project-body">
+                    <div class="project-tags"><span class="project-tag">Laravel</span><span class="project-tag">PHP</span><span class="project-tag">MySQL</span></div>
+                    <h3>Web Application Platform</h3>
+                    <p>A full-featured web application platform built with Laravel, featuring authentication, dashboard and API integration.</p>
+                    <div class="project-links">
+                        <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                        <a href="https://github.com/nofiupelumi" class="project-link"><i class="fab fa-github"></i> GitHub</a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-img"><i class="fas fa-robot"></i></div>
+                <div class="project-body">
+                    <div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">TensorFlow</span><span class="project-tag">AI</span></div>
+                    <h3>AI Prediction Model</h3>
+                    <p>A machine learning model that predicts outcomes using advanced algorithms and neural networks with high accuracy.</p>
+                    <div class="project-links">
+                        <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                        <a href="https://github.com/nofiupelumi" class="project-link"><i class="fab fa-github"></i> GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="experience" id="experience">
+    <div class="experience-inner">
+        <div class="section-header">
+            <div class="section-tag"><i class="fas fa-briefcase"></i> Experience</div>
+            <h2>My <span class="gradient-text">Journey</span></h2>
+            <p>A timeline of my professional growth and achievements</p>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">2023 — Present</div>
+                <h3>Software Programmer & Data Scientist</h3>
+                <h4>Freelance / Self-employed</h4>
+                <p>Building data-driven web applications and providing data science consulting services for clients across various industries.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">2020 — 2024</div>
+                <h3>B.Sc Mathematics (First Class Honours)</h3>
+                <h4>University of Nigeria, Nsukka</h4>
+                <p>Graduated with First Class Honours in Mathematics. Specialized in statistical modeling, data analysis, and computational mathematics.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">2022 — 2023</div>
+                <h3>Data Analyst Intern</h3>
+                <h4>[Company Name]</h4>
+                <p>Worked on data analysis projects, built machine learning models, and created data visualization dashboards for business insights.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+    <div class="services-inner">
+        <div class="section-header">
+            <div class="section-tag"><i class="fas fa-concierge-bell"></i> Services</div>
+            <h2>What I <span class="gradient-text">Offer</span></h2>
+            <p>Professional services tailored to your digital needs</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-chart-bar"></i></div>
+                <h3>Data Analysis</h3>
+                <p>Transform raw data into meaningful insights using advanced statistical methods and visualization techniques.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-brain"></i></div>
+                <h3>Machine Learning</h3>
+                <p>Build intelligent prediction models and AI systems that learn from data to make smart decisions.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-laptop-code"></i></div>
+                <h3>Software Development</h3>
+                <p>Create stunning, responsive web applications with modern technologies and clean architecture.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fab fa-laravel"></i></div>
+                <h3>Laravel Development</h3>
+                <p>Build robust, scalable web applications using Laravel with clean architecture and best practices.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-database"></i></div>
+                <h3>Database Design</h3>
+                <p>Design efficient database schemas and optimize queries for maximum performance and scalability.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-chart-pie"></i></div>
+                <h3>Data Visualization</h3>
+                <p>Create interactive charts, graphs, and dashboards that make complex data easy to understand.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+    <div class="testimonials-inner">
+        <div class="section-header">
+            <div class="section-tag"><i class="fas fa-quote-left"></i> Testimonials</div>
+            <h2>What People <span class="gradient-text">Say</span></h2>
+            <p>Feedback from clients and collaborators</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p>"Nofiu delivered exceptional work on our data analysis project. His mathematical background really shows in the quality and accuracy of his work."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">JA</div>
+                    <div><h4>James Adeyemi</h4><p>Tech Lead, StartupNG</p></div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p>"Outstanding developer! Built our entire web platform from scratch with clean code and beautiful UI. Highly recommended!"</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">AO</div>
+                    <div><h4>Amaka Okonkwo</h4><p>CEO, DigitalHub</p></div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p>"His machine learning model improved our prediction accuracy by 40%. A brilliant mind with strong technical skills and great communication."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">BM</div>
+                    <div><h4>Bayo Martins</h4><p>Data Manager, FinTech Co.</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+    <div class="contact-inner">
+        <div class="contact-info">
+            <div class="section-tag"><i class="fas fa-envelope"></i> Contact</div>
+            <h2>Let's <span class="gradient-text">Work Together</span></h2>
+            <p>Have a project in mind or want to collaborate? I'd love to hear from you. Let's build something amazing together!</p>
+            <div class="contact-items">
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                    <div><h4>Email</h4><p>nofiupelumi@gmail.com</p></div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fab fa-github"></i></div>
+                    <div><h4>GitHub</h4><p>github.com/nofiupelumi</p></div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fab fa-linkedin"></i></div>
+                    <div><h4>LinkedIn</h4><p>linkedin.com/in/moruf-nofiu</p></div>
+                </div>
+            </div>
+        </div>
+        <div class="contact-form">
+            <div class="form-group"><label>Your Name</label><input type="text" placeholder="John Doe"></div>
+            <div class="form-group"><label>Email Address</label><input type="email" placeholder="john@example.com"></div>
+            <div class="form-group"><label>Subject</label><input type="text" placeholder="Project Collaboration"></div>
+            <div class="form-group"><label>Message</label><textarea placeholder="Tell me about your project..."></textarea></div>
+            <button class="btn-primary" style="width:100%; justify-content:center;"><i class="fas fa-paper-plane"></i> Send Message</button>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+    <div class="cta-inner">
+        <div class="section-tag"><i class="fas fa-rocket"></i> Let's Build</div>
+        <h2>Ready to Start Your <span class="gradient-text">Next Project?</span></h2>
+        <p>Whether you need data science expertise, a stunning website, or a full web application — I'm here to help bring your vision to life.</p>
+        <div class="cta-buttons">
+            <a href="#contact" class="btn-primary"><i class="fas fa-paper-plane"></i> Get In Touch</a>
+            <a href="https://github.com/nofiupelumi" target="_blank" class="btn-outline"><i class="fab fa-github"></i> View GitHub</a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="inner">
+        <p>© 2026 Nofiu Moruf Pelumi. Built with <i class="fas fa-heart" style="color:#6366F1;"></i> and Laravel.</p>
+        <div class="social-links">
+            <a href="https://github.com/nofiupelumi" target="_blank" class="social-link"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/moruf-nofiu-5bb55721a" target="_blank" class="social-link"><i class="fab fa-linkedin"></i></a>
+            <a href="https://nofiupelumi.github.io/" target="_blank" class="social-link"><i class="fas fa-globe"></i></a>
+        </div>
+    </div>
+</footer>
+
+<script>
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        const l = document.getElementById('loader');
+        l.style.opacity = '0';
+        setTimeout(() => l.style.display = 'none', 600);
+    }, 1800);
+});
+
+(function() {
+    const c = document.getElementById('particles');
+    const colors = ['#6366F1', '#22D3EE', '#7C3AED'];
+    for(let i = 0; i < 25; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 3 + 1;
+        p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*3)]};animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*15}s;`;
+        c.appendChild(p);
+    }
+})();
+
+window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+    document.getElementById('hamburger').classList.toggle('active');
+}
+
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        document.getElementById('navLinks').classList.remove('open');
+        document.getElementById('hamburger').classList.remove('active');
+    });
+});
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.project-card, .service-card, .testimonial-card, .skill-item, .timeline-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+});
+</script>
+
+</body>
+</html>
